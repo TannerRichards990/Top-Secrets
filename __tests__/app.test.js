@@ -2,12 +2,25 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 
 const mockUser = {
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'JohnDoe@test.example.com',
-  password: '12345678',
+  firstName: 'john',
+  lastName: 'doe',
+  email: 'johndoe@test.com',
+  password: '123456',
+};
+
+const registerAndLogin = async (useProps = {}) => {
+  const password = useProps.password ?? mockUser.password;
+
+  const agent = request.agent(app);
+
+  const user = await UserService.create({ ...mockUser, ...useProps });
+
+  const { email } = user;
+  await agent.post('/api/v1/users/sessions').send({ email, password });
+  return [agent, user];
 };
 
 
