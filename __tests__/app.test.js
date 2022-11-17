@@ -10,6 +10,7 @@ const mockUser = {
   password: '12345678',
 };
 
+
 describe('backend-express-template routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -24,5 +25,8 @@ describe('backend-express-template routes', () => {
       lastName,
       email,
     });
+  });
+  afterAll(() => {
+    pool.end();
   });
 });
