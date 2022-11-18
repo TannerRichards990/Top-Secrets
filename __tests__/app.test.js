@@ -62,6 +62,7 @@ describe('backend-express-template routes', () => {
   it('users should return 401 if not signed in', async () => {
     const response = await request(app).delete('/api/v1/users');
     expect(response.status).toBe(401);
+  });
 
   afterAll(() => {
     pool.end();
