@@ -59,6 +59,12 @@ describe('backend-express-template routes', () => {
     expect(response.status).toBe(200);
   });
 
+  it('users should return 200 if the user is the admin', async () => {
+    const [agent] = await registerAndLogin({ email: 'admin' });
+    const response = await agent.get('/api/v1/users');
+    expect(response.status).toBe(200);
+  });
+
   afterAll(() => {
     pool.end();
   });
