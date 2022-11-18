@@ -53,6 +53,12 @@ describe('backend-express-template routes', () => {
     expect(response.status).toBe(401);
   });
 
+  it('users should return 403 if the user is not the admin', async () => {
+    const [agent] = await registerAndLogin();
+    const response = await agent.get('/api/v1/users/protected');
+    expect(response.status).toBe(200);
+  });
+
   afterAll(() => {
     pool.end();
   });
