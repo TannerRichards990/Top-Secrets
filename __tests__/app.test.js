@@ -84,9 +84,9 @@ describe('backend-express-template routes', () => {
     const agent = request.agent(app);
     await agent
       .post('/api/v1/users/sessions')
-      .send({ email: 'jdobbs@jd.com', password: '123456' });
+      .send({ email: 'johndoe@test.com', password: '123456' });
     const response = await agent.post('/api/v1/secrets').send({
-      title: 'Whodis', description: 'I am a secret', });
+      title: 'Who', description: 'I am a secret', });
     expect(response.status).toBe(200);
   });
 
