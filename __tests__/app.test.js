@@ -11,12 +11,12 @@ const mockUser = {
   password: '123456',
 };
 
-const registerAndLogin = async (useProps = {}) => {
-  const password = useProps.password ?? mockUser.password;
+const registerAndLogin = async (userProps = {}) => {
+  const password = userProps.password ?? mockUser.password;
 
   const agent = request.agent(app);
 
-  const user = await UserService.create({ ...mockUser, ...useProps });
+  const user = await UserService.create({ ...mockUser, ...userProps });
 
   const { email } = user;
   await agent.post('/api/v1/users/sessions').send({ email, password });
@@ -59,11 +59,9 @@ describe('backend-express-template routes', () => {
     expect(response.status).toBe(200);
   });
 
-  it('users should return 200 if the user is the admin', async () => {
-    const [agent] = await registerAndLogin({ email: 'admin' });
-    const response = await agent.get('/api/v1/users');
-    expect(response.status).toBe(200);
-  });
+  it('users should return 401 if not signed in', async () => {
+    const response = await request(app).delete('/api/v1/users');
+    expect(response.status).toBe(401);
 
   afterAll(() => {
     pool.end();
