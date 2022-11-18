@@ -74,6 +74,11 @@ describe('backend-express-template routes', () => {
     });
   });
 
+  it('secrets should return a 401 if user is not authenticated', async () => {
+    const response = await request(app).get('/api/v1/secrets');
+    expect(response.status).toBe(401);
+  });
+
   afterAll(() => {
     pool.end();
   });
