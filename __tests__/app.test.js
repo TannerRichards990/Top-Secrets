@@ -79,6 +79,17 @@ describe('backend-express-template routes', () => {
     expect(response.status).toBe(401);
   });
 
+  it('/users should be able to post a new secret', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/users/sessions')
+      .send({ email: 'jdobbs@jd.com', password: '123456' });
+    const response = await agent.post('/api/v1/secrets').send({
+      title: 'Whodis', description: 'I am a secret', });
+    expect(response.status).toBe(200);
+  });
+
   it('/secrets should return a list of secrets if user is authenticated', async () => {
     const [agent] = await registerAndLogin();
     const response = await agent.get('/api/v1/secrets');
