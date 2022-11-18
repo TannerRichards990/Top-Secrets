@@ -64,6 +64,16 @@ describe('backend-express-template routes', () => {
     expect(response.status).toBe(401);
   });
 
+  it('/users should sign out an existing users', async () => {
+    const [agent] = await registerAndLogin();
+    const response = await agent.delete('/api/v1/users');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      message: 'Signed out successfully',
+      success: true,
+    });
+  });
+
   afterAll(() => {
     pool.end();
   });
