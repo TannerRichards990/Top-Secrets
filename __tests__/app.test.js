@@ -47,6 +47,12 @@ describe('backend-express-template routes', () => {
       .send({ email: 'johndoe@test.com', password: '123456' });
     expect(res.status).toBe(200);
   });
+
+  it('/protected should return a 401 if not authenticated', async () => {
+    const response = await request(app).get('/api/v1/protected');
+    expect(response.status).toBe(401);
+  });
+
   afterAll(() => {
     pool.end();
   });
